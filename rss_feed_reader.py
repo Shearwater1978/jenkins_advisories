@@ -28,14 +28,14 @@ logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
 
 
 def check_python_release():
-    python_major_version_tested = 3
-    python_minor_version_tested = 10
+    PYTHON_MAJOR_VERSION = 3
+    PYTHON_MINOR_VERSION = 10
     stable_runtime_verions = ".".join(
-        [str(python_major_version_tested), str(python_minor_version_tested)]
+        [str(PYTHON_MAJOR_VERSION), str(PYTHON_MINOR_VERSION)]
         )
 
-    is_runtime_major_ok = True if sys.version_info[0] == python_major_version_tested else False
-    is_runtime_minor_ok = True if sys.version_info[1] < python_minor_version_tested else False
+    is_runtime_major_ok = True if sys.version_info[0] == PYTHON_MAJOR_VERSION else False
+    is_runtime_minor_ok = True if sys.version_info[1] < PYTHON_MINOR_VERSION else False
 
     if (is_runtime_major_ok) and (is_runtime_minor_ok):
         logger.warning('Mismatch runtime versions')
