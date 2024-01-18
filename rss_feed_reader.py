@@ -12,6 +12,14 @@ RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
 HOW_DEEP_ITEMS_LOOK_BACK = 1
 DATE_FORMAT_STR = '%a, %d %b %Y %I:%M:%S %z'
 SENSITIVE_PLUGINS = ['saml', 'kubernetes', 'HTMLResource', 'Nexus Platform']
+REGEXP_PATTERNS = [
+    r'<li>',
+    r'<\/li>',
+    r'<ul>',
+    r'<\/ul>',
+    r'<\/a>',
+    r'Affects plugin: ',
+    r'<a.*>']
 
 logger = logging.getLogger(__name__)
 FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
@@ -76,33 +84,33 @@ def get_latest_feed(days: int) -> list:
 
             if from_date < news_udated_when < till_date:
                 affected_plugins = news_feed.entries[idx].summary
-                affected_plugins = re.sub(r'<li>', '', affected_plugins)
-                affected_plugins = re.sub(r'<\/li>', '', affected_plugins)
-                affected_plugins = re.sub(r'<ul>', '', affected_plugins)
-                affected_plugins = re.sub(r'<\/ul>', '', affected_plugins)
-                affected_plugins = re.sub(r'<\/a>', '', affected_plugins)
-                affected_plugins = re.sub(r'Affects plugin: ', '', affected_plugins)
-                affected_plugins = re.sub(r'<a.*>', '', affected_plugins)
+                for REGEXP_PATTERN in REGEXP_PATTERNS:
+                    affected_plugins = re.sub(
+                        REGEXP_PATTERN,
+                        '',
+                        affected_plugins)
 
                 for affected_plugin in affected_plugins.splitlines():
                     if affected_plugin:
                         plugins.append(affected_plugin)
-        
+
         logger.info('A list of all affected plugins has been collected')
+        logger.info(plugins)
 
         return (plugins)
     return (None)
 
 
 def validate_affected_plugins(SENSITIVE_PLUGINS, affected_plugins) -> list:
-    detected_plugins = [affected_plugin for affected_plugin in SENSITIVE_PLUGINS
+    detected_plugins = [affected_plugin for affected_plugin
+                        in SENSITIVE_PLUGINS
                         if affected_plugin in affected_plugins]
 
     return (detected_plugins)
 
 
 def main():
-    days = 7
+    days = 91
     affected_plugins = None
     check_python_release()
 
