@@ -14,3 +14,8 @@ SENSITIVE_PLUGINS = ['saml', 'kubernetes']
 loggeg = logging.getLogger(__name__)
 FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
 logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
+
+def calculate_boundaries_of_interest(days_delta=7):
+  now = datetime.datetime.today()
+
+
