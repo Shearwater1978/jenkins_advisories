@@ -60,13 +60,15 @@ def check_python_release():
         [str(PYTHON_MAJOR_VERSION), str(PYTHON_MINOR_VERSION)]
         )
 
-    is_runtime_major_ok = True if sys.version_info[0] == PYTHON_MAJOR_VERSION else False
-    is_runtime_minor_ok = True if sys.version_info[1] < PYTHON_MINOR_VERSION else False
+    if (sys.version_info[0] == PYTHON_MAJOR_VERSION) and (sys.version_info[1] < PYTHON_MINOR_VERSION):
+        is_runtime_ok = True
+    else:
+        is_runtime_ok = False
 
-    if (is_runtime_major_ok) and (is_runtime_minor_ok):
+    if is_runtime_ok:
         logger.warning('Mismatch runtime versions')
-        logger.info(f'The stable runtime verision is: {stable_runtime_verions}')
-        logger.info(f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}')
+        logger.warning(f'The stable runtime verision is: {stable_runtime_verions}')
+        logger.warning(f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}')
 
 
 def calculate_boundaries_of_interest(days_delta=7):
