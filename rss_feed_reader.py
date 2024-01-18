@@ -3,8 +3,12 @@
 import datetime
 import logging
 import re
+import sys
 
-import feedparser
+# import feedparser
+
+
+
 
 RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
 HowDeepItemsLookBack = 1
@@ -14,6 +18,14 @@ SENSITIVE_PLUGINS = ['saml', 'kubernetes']
 logger = logging.getLogger(__name__)
 FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
 logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
+
+
+def check_python_release():
+  python_major_version_tested = 3
+  python_minor_version_tested = 10
+  if (sys.version_info[0] == python_major_version_tested) and (sys.version_info[1] < python_minor_version_tested):
+    logger.info(f'With the version of Python3 less than {python_major_version_tested}.{python_minor_version_tested} script can work unstable')
+    logger.info(f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}')
 
 def calculate_boundaries_of_interest(days_delta=7):
   now = datetime.datetime.today()
@@ -80,6 +92,7 @@ def validate_affected_plugins(SENSITIVE_PLUGINS, affected_plugins) -> list:
 def main():
   days = 7
   affected_plugins = None
+  check_python_release()
   actual_affected_plugins = get_latest_feed(days=days)
 
   if actual_affected_plugins:
