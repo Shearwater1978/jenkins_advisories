@@ -64,7 +64,6 @@ def check_python_release():
         is_runtime_ok = True
     else:
         is_runtime_ok = False
-
     if is_runtime_ok:
         logger.warning('Mismatch runtime versions')
         logger.warning(f'The stable runtime verision is: {stable_runtime_verions}')
@@ -125,6 +124,7 @@ def get_latest_feed(days: int) -> list:
         logger.info('A list of all affected plugins has been collected')
 
         return (plugins)
+
     return (None)
 
 
