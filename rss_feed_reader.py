@@ -11,7 +11,7 @@ import feedparser
 RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
 HOW_DEEP_ITEMS_LOOK_BACK = 1
 DATE_FORMAT_STR = '%a, %d %b %Y %I:%M:%S %z'
-SENSITIVE_PLUGINS = ['saml', 'kubernetes', 'HTMLResource', 'Nexus Platform']
+SENSITIVE_PLUGINS = ['saml', 'kubernetes']
 REGEXP_PATTERNS = [
     r'<li>',
     r'<\/li>',
@@ -19,7 +19,8 @@ REGEXP_PATTERNS = [
     r'<\/ul>',
     r'<\/a>',
     r'Affects plugin: ',
-    r'<a.*>']
+    r'<a.*>'
+  ]
 
 logger = logging.getLogger(__name__)
 FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
@@ -91,11 +92,9 @@ def get_latest_feed(days: int) -> list:
                         affected_plugins)
 
                 for affected_plugin in affected_plugins.splitlines():
-                    if affected_plugin:
-                        plugins.append(affected_plugin)
+                    plugins.append(affected_plugin)
 
         logger.info('A list of all affected plugins has been collected')
-        logger.info(plugins)
 
         return (plugins)
     return (None)
@@ -110,7 +109,7 @@ def validate_affected_plugins(SENSITIVE_PLUGINS, affected_plugins) -> list:
 
 
 def main():
-    days = 91
+    days = 7
     affected_plugins = None
     check_python_release()
 
