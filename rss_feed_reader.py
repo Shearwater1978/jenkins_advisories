@@ -123,7 +123,7 @@ def main():
         logger.info('[ALARM] One or more plugin(-s) is affeted')
         logger.info(f'The list of affected plugin(-s): {affected_plugins}')
     else:
-        logger.info(f'For the {days} day(-s) no any sensitive affected plugin(-s) found')
+        logger.info(f'For the {days} day(-s) no any sensitive plugin(-s) found')
 
 
 if __name__ == "__main__":
