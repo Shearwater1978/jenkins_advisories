@@ -26,30 +26,31 @@ FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
 logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
 
 
-try:
-    HOW_DEEP_ITEMS_LOOK_BACK = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
-except Exception as e:
-    results = 'Env variable HOW_DEEP_ITEMS_LOOK_BACK is not exists. Script terminated.'
-    logger.error(results)
-    raise SystemExit from e
+def read_envs():
+    try:
+        HOW_DEEP_ITEMS_LOOK_BACK = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
+    except Exception as e:
+        results = 'Env variable HOW_DEEP_ITEMS_LOOK_BACK is not exists. Script terminated.'
+        logger.error(results)
+        raise SystemExit from e
 
+    try:
+        LOOKING_DAYS = int(os.environ['LOOKING_DAYS'])
+    except Exception as e:
+        results = 'Env variable LOOKING_DAYS is not exists. Script terminated.'
+        logger.error(results)
+        raise SystemExit from e
 
-try:
-    LOOKING_DAYS = int(os.environ['LOOKING_DAYS'])
-except Exception as e:
-    results = 'Env variable LOOKING_DAYS is not exists. Script terminated.'
-    logger.error(results)
-    raise SystemExit from e
+    try:
+        SENSITIVE_PLUGINS = os.environ['SENSITIVE_PLUGINS'].split(";")
+        SENSITIVE_PLUGINS = [x.lstrip(' ') for x in SENSITIVE_PLUGINS]
+        SENSITIVE_PLUGINS = [x.rstrip(' ') for x in SENSITIVE_PLUGINS]
+    except Exception as e:
+        results = 'Env variable SENSITIVE_PLUGINS is not exists. Script terminated.'
+        logger.error(results)
+        raise SystemExit from e
 
-
-try:
-    SENSITIVE_PLUGINS = os.environ['SENSITIVE_PLUGINS'].split(";")
-    SENSITIVE_PLUGINS = [x.lstrip(' ') for x in SENSITIVE_PLUGINS]
-    SENSITIVE_PLUGINS = [x.rstrip(' ') for x in SENSITIVE_PLUGINS]
-except Exception as e:
-    results = 'Env variable SENSITIVE_PLUGINS is not exists. Script terminated.'
-    logger.error(results)
-    raise SystemExit from e
+    return (HOW_DEEP_ITEMS_LOOK_BACK, LOOKING_DAYS, SENSITIVE_PLUGINS)
 
 
 def check_python_release():
@@ -151,6 +152,7 @@ def main():
 
 
 if __name__ == "__main__":
+    HOW_DEEP_ITEMS_LOOK_BACK, LOOKING_DAYS, SENSITIVE_PLUGINS = read_envs()
     logger.info('Script started')
     main()
     logger.info('Script completed')
