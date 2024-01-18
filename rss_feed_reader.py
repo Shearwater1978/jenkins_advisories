@@ -5,9 +5,7 @@ import logging
 import re
 import sys
 
-# import feedparser
-
-
+import feedparser
 
 
 RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
@@ -24,8 +22,10 @@ def check_python_release():
   python_major_version_tested = 3
   python_minor_version_tested = 10
   stable_runtime_verions = ".".join([str(python_major_version_tested), str(python_minor_version_tested)])
+
   is_runtime_major_ok = True if sys.version_info[0] == python_major_version_tested else False
   is_runtime_minor_ok = True if sys.version_info[1] < python_minor_version_tested else False
+
   if (is_runtime_major_ok) and (is_runtime_minor_ok):
     logger.warning(f'Mismatch runtime versions')
     logger.info(f'The stable runtime verision is: {stable_runtime_verions}')
@@ -97,8 +97,8 @@ def main():
   days = 7
   affected_plugins = None
   check_python_release()
-  actual_affected_plugins = get_latest_feed(days=days)
 
+  actual_affected_plugins = get_latest_feed(days=days)
   if actual_affected_plugins:
     logger.info('Cheking whether plugins are affected')
     affected_plugins = validate_affected_plugins(SENSITIVE_PLUGINS, actual_affected_plugins)
