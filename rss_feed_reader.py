@@ -4,14 +4,13 @@ import datetime
 import logging
 import re
 import sys
+import os
 
 import feedparser
 
 
 RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
-HOW_DEEP_ITEMS_LOOK_BACK = 1
 DATE_FORMAT_STR = '%a, %d %b %Y %I:%M:%S %z'
-SENSITIVE_PLUGINS = ['saml', 'kubernetes']
 REGEXP_PATTERNS = [
     r'<li>',
     r'<\/li>',
@@ -25,6 +24,32 @@ REGEXP_PATTERNS = [
 logger = logging.getLogger(__name__)
 FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
 logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
+
+
+try:
+    HOW_DEEP_ITEMS_LOOK_BACK = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
+except Exception as e:
+    results = 'Env variable HOW_DEEP_ITEMS_LOOK_BACK is not exists. Script terminated.'
+    logger.error(results)
+    raise SystemExit from e
+
+
+try:
+    LOOKING_DAYS = int(os.environ['LOOKING_DAYS'])
+except Exception as e:
+    results = 'Env variable LOOKING_DAYS is not exists. Script terminated.'
+    logger.error(results)
+    raise SystemExit from e
+
+
+try:
+    SENSITIVE_PLUGINS = os.environ['SENSITIVE_PLUGINS'].split(";")
+    SENSITIVE_PLUGINS = [x.lstrip(' ') for x in SENSITIVE_PLUGINS]
+    SENSITIVE_PLUGINS = [x.rstrip(' ') for x in SENSITIVE_PLUGINS]
+except Exception as e:
+    results = 'Env variable SENSITIVE_PLUGINS is not exists. Script terminated.'
+    logger.error(results)
+    raise SystemExit from e
 
 
 def check_python_release():
@@ -109,7 +134,7 @@ def validate_affected_plugins(SENSITIVE_PLUGINS, affected_plugins) -> list:
 
 
 def main():
-    days = 7
+    days = LOOKING_DAYS
     affected_plugins = None
     check_python_release()
 
