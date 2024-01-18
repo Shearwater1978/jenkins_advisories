@@ -11,6 +11,7 @@ import feedparser
 
 RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
 DATE_FORMAT_STR = '%a, %d %b %Y %I:%M:%S %z'
+SHORT_DATE_FORMAT = '%Y-%m-%d'
 REGEXP_PATTERNS = [
     r'<li>',
     r'<\/li>',
@@ -72,8 +73,8 @@ def check_python_release():
 
 def calculate_boundaries_of_interest(days_delta=7):
     now = datetime.datetime.today()
-    till_date = now.strftime('%Y-%m-%d')
-    from_date = (now - datetime.timedelta(days=days_delta)).strftime('%Y-%m-%d')
+    till_date = now.strftime(SHORT_DATE_FORMAT)
+    from_date = (now - datetime.timedelta(days=days_delta)).strftime(SHORT_DATE_FORMAT)
     logger.info(f'Specific date range calculated. From date: {from_date}, till date: {till_date}')
 
     return (till_date, from_date)
@@ -98,7 +99,7 @@ def get_latest_feed(days: int) -> list:
         custom_exception()
 
     if news_feed.status != 200:
-        custom_exception
+        custom_exception()
 
     plugins = []
     if news_feed_counter > HOW_DEEP_ITEMS_LOOK_BACK:
@@ -108,13 +109,13 @@ def get_latest_feed(days: int) -> list:
             news_udated_when = datetime.datetime.strptime(
                     news_udated_when_raw,
                     DATE_FORMAT_STR
-            ).strftime('%Y-%m-%d')
+            ).strftime(SHORT_DATE_FORMAT)
 
             if from_date < news_udated_when < till_date:
                 affected_plugins = news_feed.entries[idx].summary
-                for REGEXP_PATTERN in REGEXP_PATTERNS:
+                for regexp_pattern in REGEXP_PATTERNS:
                     affected_plugins = re.sub(
-                        REGEXP_PATTERN,
+                        regexp_pattern,
                         '',
                         affected_plugins)
 
@@ -125,12 +126,10 @@ def get_latest_feed(days: int) -> list:
 
         return (plugins)
 
-    return (None)
 
-
-def validate_affected_plugins(SENSITIVE_PLUGINS, affected_plugins) -> list:
+def validate_affected_plugins(sensitive_plugins, affected_plugins) -> list:
     detected_plugins = [affected_plugin for affected_plugin
-                        in SENSITIVE_PLUGINS
+                        in sensitive_plugins
                         if affected_plugin in affected_plugins]
 
     return (detected_plugins)
