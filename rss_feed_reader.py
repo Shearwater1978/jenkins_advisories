@@ -95,6 +95,7 @@ def get_latest_feed(days: int) -> list:
 
     news_feed = feedparser.parse(RSS_FEED_URL)
     news_feed_counter = len(news_feed)
+    affected_plugin = []
 
     try:
         news_feed.status
@@ -126,7 +127,6 @@ def get_latest_feed(days: int) -> list:
                     plugins.append(affected_plugin)
 
         logger.info('A list of all affected plugins has been collected')
-
         return (plugins)
 
 
@@ -139,10 +139,10 @@ def validate_affected_plugins(sensitive_plugins, affected_plugins) -> list:
 
 
 def main():
-    days = LOOKING_DAYS
-    affected_plugins = None
     check_python_release()
 
+    days = LOOKING_DAYS
+    affected_plugins = None
     actual_affected_plugins = get_latest_feed(days=days)
     if actual_affected_plugins:
         logger.info('Cheking whether plugins are affected')
