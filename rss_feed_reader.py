@@ -23,8 +23,12 @@ logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
 def check_python_release():
   python_major_version_tested = 3
   python_minor_version_tested = 10
-  if (sys.version_info[0] == python_major_version_tested) and (sys.version_info[1] < python_minor_version_tested):
-    logger.info(f'With the version of Python3 less than {python_major_version_tested}.{python_minor_version_tested} script can work unstable')
+  stable_runtime_verions = ".".join([str(python_major_version_tested), str(python_minor_version_tested)])
+  is_runtime_major_ok = True if sys.version_info[0] == python_major_version_tested else False
+  is_runtime_minor_ok = True if sys.version_info[1] < python_minor_version_tested else False
+  if (is_runtime_major_ok) and (is_runtime_minor_ok):
+    logger.warning(f'Mismatch runtime versions')
+    logger.info(f'The stable runtime verision is: {stable_runtime_verions}')
     logger.info(f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}')
 
 def calculate_boundaries_of_interest(days_delta=7):
