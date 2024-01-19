@@ -115,7 +115,8 @@ def get_latest_feed(days: int) -> list:
                     DATE_FORMAT_STR
             ).strftime(SHORT_DATE_FORMAT)
 
-            if from_date < news_udated_when < till_date:
+            if from_date <= news_udated_when <= till_date:
+                logger.debug('from_date < news_udated_when < till_date')
                 affected_plugins = news_feed.entries[idx].summary
                 for regexp_pattern in REGEXP_PATTERNS:
                     affected_plugins = re.sub(
@@ -124,7 +125,8 @@ def get_latest_feed(days: int) -> list:
                         affected_plugins)
 
                 for affected_plugin in affected_plugins.splitlines():
-                    plugins.append(affected_plugin)
+                    if affected_plugin:
+                        plugins.append(affected_plugin)
 
         logger.info('A list of all affected plugins has been collected')
         return (plugins)
