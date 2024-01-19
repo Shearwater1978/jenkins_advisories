@@ -64,11 +64,11 @@ def check_python_release():
         ]
     )
 
-    if (sys.version_info[0] == PYTHON_MAJOR_VERSION) and (sys.version_info[1] < PYTHON_MINOR_VERSION):
+    if (sys.version_info[0] == PYTHON_MAJOR_VERSION) and (sys.version_info[1] >= PYTHON_MINOR_VERSION):
         is_runtime_ok = True
     else:
         is_runtime_ok = False
-    if is_runtime_ok:
+    if not is_runtime_ok:
         logger.warning('Mismatch runtime versions')
         logger.warning(f'The stable runtime verision is: {stable_runtime_verions}')
         logger.warning(f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}')
