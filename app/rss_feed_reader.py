@@ -19,8 +19,8 @@ REGEXP_PATTERNS = [
     r'<\/ul>',
     r'<\/a>',
     r'Affects plugin: ',
-    r'<a.*>'
-  ]
+    r'<a.*>',
+]
 
 logger = logging.getLogger(__name__)
 FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
@@ -31,7 +31,9 @@ def read_envs():
     try:
         HOW_DEEP_ITEMS_LOOK_BACK = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
     except Exception as e:
-        results = 'Env variable HOW_DEEP_ITEMS_LOOK_BACK is not exists. Script terminated.'
+        results = (
+            'Env variable HOW_DEEP_ITEMS_LOOK_BACK is not exists. Script terminated.'
+        )
         logger.error(results)
         raise SystemExit from e
 
@@ -58,27 +60,30 @@ def check_python_release():
     PYTHON_MAJOR_VERSION = 3
     PYTHON_MINOR_VERSION = 10
     stable_runtime_verions = '.'.join(
-        [
-            str(PYTHON_MAJOR_VERSION),
-            str(PYTHON_MINOR_VERSION)
-        ]
+        [str(PYTHON_MAJOR_VERSION), str(PYTHON_MINOR_VERSION)]
     )
 
-    if (sys.version_info[0] == PYTHON_MAJOR_VERSION) and (sys.version_info[1] >= PYTHON_MINOR_VERSION):
+    if (sys.version_info[0] == PYTHON_MAJOR_VERSION) and (
+        sys.version_info[1] >= PYTHON_MINOR_VERSION
+    ):
         is_runtime_ok = True
     else:
         is_runtime_ok = False
     if not is_runtime_ok:
         logger.warning('Mismatch runtime versions')
         logger.warning(f'The stable runtime verision is: {stable_runtime_verions}')
-        logger.warning(f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}')
+        logger.warning(
+            f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}'
+        )
 
 
 def calculate_boundaries_of_interest(days_delta=7):
     now = datetime.datetime.today()
     till_date = now.strftime(SHORT_DATE_FORMAT)
     from_date = (now - datetime.timedelta(days=days_delta)).strftime(SHORT_DATE_FORMAT)
-    logger.info(f'Specific date range calculated. From date: {from_date}, till date: {till_date}')
+    logger.info(
+        f'Specific date range calculated. From date: {from_date}, till date: {till_date}'
+    )
 
     return (till_date, from_date)
 
@@ -108,36 +113,33 @@ def get_latest_feed(days: int) -> list:
     plugins = []
     if news_feed_counter > HOW_DEEP_ITEMS_LOOK_BACK:
         for idx in range(0, HOW_DEEP_ITEMS_LOOK_BACK):
-
             news_udated_when_raw = news_feed.entries[idx].updated
             news_udated_when = datetime.datetime.strptime(
-                    news_udated_when_raw,
-                    DATE_FORMAT_STR
+                news_udated_when_raw, DATE_FORMAT_STR
             ).strftime(SHORT_DATE_FORMAT)
 
             if from_date <= news_udated_when <= till_date:
                 logger.debug('from_date < news_udated_when < till_date')
                 affected_plugins = news_feed.entries[idx].summary
                 for regexp_pattern in REGEXP_PATTERNS:
-                    affected_plugins = re.sub(
-                        regexp_pattern,
-                        '',
-                        affected_plugins)
+                    affected_plugins = re.sub(regexp_pattern, '', affected_plugins)
 
                 for affected_plugin in affected_plugins.splitlines():
                     if affected_plugin:
                         plugins.append(affected_plugin)
 
         logger.info('A list of all affected plugins has been collected')
-        return (plugins)
+        return plugins
 
 
 def validate_affected_plugins(sensitive_plugins, affected_plugins) -> list:
-    detected_plugins = [affected_plugin for affected_plugin
-                        in sensitive_plugins
-                        if affected_plugin in affected_plugins]
+    detected_plugins = [
+        affected_plugin
+        for affected_plugin in sensitive_plugins
+        if affected_plugin in affected_plugins
+    ]
 
-    return (detected_plugins)
+    return detected_plugins
 
 
 def main():
@@ -148,7 +150,9 @@ def main():
     actual_affected_plugins = get_latest_feed(days=days)
     if actual_affected_plugins:
         logger.info('Cheking whether plugins are affected')
-        affected_plugins = validate_affected_plugins(SENSITIVE_PLUGINS, actual_affected_plugins)
+        affected_plugins = validate_affected_plugins(
+            SENSITIVE_PLUGINS, actual_affected_plugins
+        )
 
     if affected_plugins:
         logger.info('[ALARM] One or more plugin(-s) is affeted')

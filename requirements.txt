@@ -7,3 +7,4 @@ nodeenv==1.8
 platformdirs==4.1
 pre-commit==3.6
 virtualenv==20.25
+
