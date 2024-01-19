@@ -122,7 +122,9 @@ def get_latest_feed(days: int) -> list:
                 logger.debug('from_date < news_udated_when < till_date')
                 affected_plugins = news_feed.entries[idx].summary
                 for regexp_pattern in REGEXP_PATTERNS:
-                    affected_plugins = re.sub(regexp_pattern, '', affected_plugins)
+                    affected_plugins = re.sub(
+                        regexp_pattern, '', affected_plugins
+                    )
 
                 for affected_plugin in affected_plugins.splitlines():
                     if affected_plugin:
@@ -158,7 +160,9 @@ def main():
         logger.info('[ALARM] One or more plugin(-s) is affeted')
         logger.info(f'The list of affected plugin(-s): {affected_plugins}')
     else:
-        logger.info(f'For the {days} day(-s) no any sensitive plugin(-s) found')
+        logger.info(
+            f'For the {days} day(-s) no any sensitive plugin(-s) found'
+        )
 
 
 if __name__ == '__main__':
