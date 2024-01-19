@@ -43,7 +43,7 @@ def read_envs():
         raise SystemExit from e
 
     try:
-        SENSITIVE_PLUGINS = os.environ['SENSITIVE_PLUGINS'].split(";")
+        SENSITIVE_PLUGINS = os.environ['SENSITIVE_PLUGINS'].split(';')
         SENSITIVE_PLUGINS = [x.lstrip(' ') for x in SENSITIVE_PLUGINS]
         SENSITIVE_PLUGINS = [x.rstrip(' ') for x in SENSITIVE_PLUGINS]
     except Exception as e:
@@ -57,9 +57,9 @@ def read_envs():
 def check_python_release():
     PYTHON_MAJOR_VERSION = 3
     PYTHON_MINOR_VERSION = 10
-    stable_runtime_verions = ".".join(
+    stable_runtime_verions = '.'.join(
         [
-            str(PYTHON_MAJOR_VERSION), 
+            str(PYTHON_MAJOR_VERSION),
             str(PYTHON_MINOR_VERSION)
         ]
     )
@@ -157,7 +157,7 @@ def main():
         logger.info(f'For the {days} day(-s) no any sensitive plugin(-s) found')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     HOW_DEEP_ITEMS_LOOK_BACK, LOOKING_DAYS, SENSITIVE_PLUGINS = read_envs()
     logger.info('Script started')
     main()
