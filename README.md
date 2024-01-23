@@ -1,1 +1,1 @@
-# jenkins_advidories
+# jenkins_advisories
