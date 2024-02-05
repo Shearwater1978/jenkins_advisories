@@ -15,7 +15,7 @@ make
 
 2. Make sure there is a message in ouput about affected plugin "HTMLResource"
 ```
-2024-01-01 23:29:20,099 - INFO - [ALARM] One or more plugin(-s) is affeted
+2024-01-01 23:59:20,099 - INFO - [ALARM] One or more plugin(-s) is affeted
 2024-01-01 23:59:20,099 - INFO - The list of affected plugin(-s): ['HTMLResource']
 ```
 
