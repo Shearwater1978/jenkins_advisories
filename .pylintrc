@@ -4,3 +4,8 @@ disable=
     C0115, # missing-class-docstring
     C0116, # missing-function-docstring
     C0325, # superfluous-parens
+    W0621, # redefined-outer-name
+    R1703, # simplifiable-if-statement
+    W1201, # logging-not-lazy
+    C0209, # consider-using-f-string
+    W0718, # broad-exception-caught

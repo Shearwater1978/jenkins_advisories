@@ -29,46 +29,46 @@ logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
 
 def read_envs():
     try:
-        HOW_DEEP_ITEMS_LOOK_BACK = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
-    except Exception as e:
+        how_deep_items_look_back = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
+    except Exception as error:
         results = (
             'Env variable HOW_DEEP_ITEMS_LOOK_BACK is'
             'not exists. Script terminated.'
         )
         logger.error(results)
-        raise SystemExit from e
+        raise SystemExit from error
 
     try:
-        LOOKING_DAYS = int(os.environ['LOOKING_DAYS'])
-    except Exception as e:
+        looking_days = int(os.environ['LOOKING_DAYS'])
+    except Exception as error:
         results = 'Env variable LOOKING_DAYS is not exists. Script terminated.'
         logger.error(results)
-        raise SystemExit from e
+        raise SystemExit from error
 
     try:
-        SENSITIVE_PLUGINS = os.environ['SENSITIVE_PLUGINS'].split(';')
-        SENSITIVE_PLUGINS = [x.lstrip(' ') for x in SENSITIVE_PLUGINS]
-        SENSITIVE_PLUGINS = [x.rstrip(' ') for x in SENSITIVE_PLUGINS]
-    except Exception as e:
+        sensitive_plugins = os.environ['SENSITIVE_PLUGINS'].split(';')
+        sensitive_plugins = [x.lstrip(' ') for x in sensitive_plugins]
+        sensitive_plugins = [x.rstrip(' ') for x in sensitive_plugins]
+    except Exception as error:
         results = (
             'Env variable SENSITIVE_PLUGINS is not '
             'exists. Script terminated.'
         )
         logger.error(results)
-        raise SystemExit from e
+        raise SystemExit from error
 
-    return (HOW_DEEP_ITEMS_LOOK_BACK, LOOKING_DAYS, SENSITIVE_PLUGINS)
+    return (how_deep_items_look_back, looking_days, sensitive_plugins)
 
 
 def check_python_release():
-    PYTHON_MAJOR_VERSION = 3
-    PYTHON_MINOR_VERSION = 10
+    python_major_version = 3
+    python_minor_version = 10
     stable_runtime_verions = '.'.join(
-        [str(PYTHON_MAJOR_VERSION), str(PYTHON_MINOR_VERSION)]
+        [str(python_major_version), str(python_minor_version)]
     )
 
-    if (sys.version_info[0] == PYTHON_MAJOR_VERSION) and (
-        sys.version_info[1] >= PYTHON_MINOR_VERSION
+    if (sys.version_info[0] == python_major_version) and (
+        sys.version_info[1] >= python_minor_version
     ):
         is_runtime_ok = True
     else:
@@ -108,7 +108,7 @@ def custom_exception():
     raise SystemError
 
 
-def get_latest_feed(days: int) -> list:
+def get_latest_feed(days: int):
     till_date, from_date = calculate_boundaries_of_interest(days_delta=days)
 
     news_feed = feedparser.parse(RSS_FEED_URL)
@@ -117,15 +117,16 @@ def get_latest_feed(days: int) -> list:
 
     try:
         news_feed.status
-    except Exception:
+    except Exception as error:
+        logger.error(error)
         custom_exception()
 
     if news_feed.status != 200:
         custom_exception()
 
     plugins = []
-    if news_feed_counter > HOW_DEEP_ITEMS_LOOK_BACK:
-        for idx in range(0, HOW_DEEP_ITEMS_LOOK_BACK):
+    if news_feed_counter > how_deep_items_look_back:
+        for idx in range(0, how_deep_items_look_back):
             news_udated_when_raw = news_feed.entries[idx].updated
             news_udated_when = datetime.datetime.strptime(
                 news_udated_when_raw, DATE_FORMAT_STR
@@ -146,7 +147,7 @@ def get_latest_feed(days: int) -> list:
 
         message = 'A list of all affected plugins has been collected'
         logger.info(message)
-        return plugins
+    return plugins
 
 
 def validate_affected_plugins(sensitive_plugins, affected_plugins) -> list:
@@ -162,14 +163,14 @@ def validate_affected_plugins(sensitive_plugins, affected_plugins) -> list:
 def main():
     check_python_release()
 
-    days = LOOKING_DAYS
+    days = looking_days
     affected_plugins = None
     actual_affected_plugins = get_latest_feed(days=days)
     if actual_affected_plugins:
         message = 'Cheking whether plugins are affected'
         logger.info(message)
         affected_plugins = validate_affected_plugins(
-            SENSITIVE_PLUGINS, actual_affected_plugins
+            sensitive_plugins, actual_affected_plugins
         )
 
     if affected_plugins:
@@ -184,7 +185,7 @@ def main():
 
 
 if __name__ == '__main__':
-    HOW_DEEP_ITEMS_LOOK_BACK, LOOKING_DAYS, SENSITIVE_PLUGINS = read_envs()
+    how_deep_items_look_back, looking_days, sensitive_plugins = read_envs()
     logger.info('Script started')
     main()
     logger.info('Script completed')
