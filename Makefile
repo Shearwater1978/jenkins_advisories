@@ -14,7 +14,7 @@ venv_create:
 	pyenv install 3.10 --skip-existing
 	pyenv virtualenv 3.10 rss_tmp -f
 	pyenv local rss_tmp
-	pip install -r app/requirements.txt
+	$(pip install -r app/requirements.txt | grep -v 'already satisfied')
 
 dry_run:
 	pyenv local rss_tmp
@@ -25,11 +25,11 @@ dry_run:
 
 test:
 	pyenv local rss_tmp
-	pip install pytest
+	$(pip install pytest | grep -v 'already satisfied')
 	pytest tests/
 
 lint:
 	pyenv local rss_tmp
-	pip install flake8 pylint
+	$(pip install flake8 pylint | grep -v 'already satisfied')
 	flake8 app/rss_feed_reader.py
 	pylint app/rss_feed_reader.py
