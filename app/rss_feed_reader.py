@@ -32,7 +32,8 @@ def read_envs():
         HOW_DEEP_ITEMS_LOOK_BACK = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
     except Exception as e:
         results = (
-            'Env variable HOW_DEEP_ITEMS_LOOK_BACK is not exists. Script terminated.'
+            'Env variable HOW_DEEP_ITEMS_LOOK_BACK is'
+            'not exists. Script terminated.'
         )
         logger.error(results)
         raise SystemExit from e
@@ -49,7 +50,10 @@ def read_envs():
         SENSITIVE_PLUGINS = [x.lstrip(' ') for x in SENSITIVE_PLUGINS]
         SENSITIVE_PLUGINS = [x.rstrip(' ') for x in SENSITIVE_PLUGINS]
     except Exception as e:
-        results = 'Env variable SENSITIVE_PLUGINS is not exists. Script terminated.'
+        results = (
+            'Env variable SENSITIVE_PLUGINS is not '
+            'exists. Script terminated.'
+        )
         logger.error(results)
         raise SystemExit from e
 
@@ -57,7 +61,7 @@ def read_envs():
 
 
 def check_python_release():
-    PYTHON_MAJOR_VERSION = 3
+    PYTHON_MAJOR_VERSION = 4
     PYTHON_MINOR_VERSION = 10
     stable_runtime_verions = '.'.join(
         [str(PYTHON_MAJOR_VERSION), str(PYTHON_MINOR_VERSION)]
@@ -71,25 +75,34 @@ def check_python_release():
         is_runtime_ok = False
     if not is_runtime_ok:
         logger.warning('Mismatch runtime versions')
-        logger.warning(f'The stable runtime verision is: {stable_runtime_verions}')
         logger.warning(
-            f'The Python3 runtime is {sys.version_info[0]}.{sys.version_info[1]}'
+            'The stable runtime verision is: %s'
+            % stable_runtime_verions
+        )
+        logger.warning(
+            'The Python3 runtime is %s.%s'
+            % (sys.version_info[0], sys.version_info[1])
         )
 
 
 def calculate_boundaries_of_interest(days_delta=7):
     now = datetime.datetime.today()
     till_date = now.strftime(SHORT_DATE_FORMAT)
-    from_date = (now - datetime.timedelta(days=days_delta)).strftime(SHORT_DATE_FORMAT)
+    from_date = (now - datetime.timedelta(days=days_delta))
+    from_date = from_date.strftime(SHORT_DATE_FORMAT)
     logger.info(
-        f'Specific date range calculated. From date: {from_date}, till date: {till_date}'
+        'Specific date range calculated. From date:'
+        '%s, till date: %s' % (from_date, till_date)
     )
 
     return (till_date, from_date)
 
 
 def custom_exception():
-    logger.error(f'Something wrong wuth the RSS endpoint: {RSS_FEED_URL}')
+    logger.error(
+        'Something wrong wuth the RSS endpoint: %s'
+        % RSS_FEED_URL
+    )
     logger.error('Please check an access to the RSS endpoint and try again')
     logger.error('Script abnormal tetminated')
     raise SystemError
@@ -119,7 +132,8 @@ def get_latest_feed(days: int) -> list:
             ).strftime(SHORT_DATE_FORMAT)
 
             if from_date <= news_udated_when <= till_date:
-                logger.debug('from_date < news_udated_when < till_date')
+                message = 'from_date < news_udated_when < till_date'
+                logger.debug(message)
                 affected_plugins = news_feed.entries[idx].summary
                 for regexp_pattern in REGEXP_PATTERNS:
                     affected_plugins = re.sub(
@@ -130,7 +144,8 @@ def get_latest_feed(days: int) -> list:
                     if affected_plugin:
                         plugins.append(affected_plugin)
 
-        logger.info('A list of all affected plugins has been collected')
+        message = 'A list of all affected plugins has been collected'
+        logger.info(message)
         return plugins
 
 
@@ -157,12 +172,14 @@ def main():
         )
 
     if affected_plugins:
-        logger.info('[ALARM] One or more plugin(-s) is affeted')
-        logger.info(f'The list of affected plugin(-s): {affected_plugins}')
-    else:
-        logger.info(
-            f'For the {days} day(-s) no any sensitive plugin(-s) found'
+        message = (
+            '[ALARM] One or more plugin(-s) is affeted'
+            f'The list of affected plugin(-s): {affected_plugins}'
         )
+        logger.info(message)
+    else:
+        message = f'For the {days} day(-s) no any sensitive plugin(-s) found'
+        logger.info(message)
 
 
 if __name__ == '__main__':

@@ -8,7 +8,8 @@ class TestCalculateBoundariesOfInterest(unittest.TestCase):
         SHORT_DATE_FORMAT = '%Y-%m-%d'
         till_date, from_date = calculate_boundaries_of_interest(7)
         # till_date should be should be today
-        expected_till_date = datetime.datetime.today().strftime(SHORT_DATE_FORMAT)
+        expected_till_date = datetime.datetime.today()
+        expected_till_date = expected_till_date.strftime(SHORT_DATE_FORMAT)
         self.assertEqual(till_date, expected_till_date)
 
         # from_date 7 days before today

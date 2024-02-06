@@ -27,3 +27,9 @@ test:
 	pyenv local rss_tmp
 	pip install pytest
 	pytest tests/
+
+lint:
+	pyenv local rss_tmp
+	pip install flake8 pylint
+	flake8 app/rss_feed_reader.py
+	pylint app/rss_feed_reader.py
