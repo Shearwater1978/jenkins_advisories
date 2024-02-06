@@ -166,7 +166,8 @@ def main():
     affected_plugins = None
     actual_affected_plugins = get_latest_feed(days=days)
     if actual_affected_plugins:
-        logger.info('Cheking whether plugins are affected')
+        message = 'Cheking whether plugins are affected'
+        logger.info(message)
         affected_plugins = validate_affected_plugins(
             SENSITIVE_PLUGINS, actual_affected_plugins
         )
