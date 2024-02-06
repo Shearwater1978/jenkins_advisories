@@ -61,7 +61,7 @@ def read_envs():
 
 
 def check_python_release():
-    PYTHON_MAJOR_VERSION = 4
+    PYTHON_MAJOR_VERSION = 3
     PYTHON_MINOR_VERSION = 10
     stable_runtime_verions = '.'.join(
         [str(PYTHON_MAJOR_VERSION), str(PYTHON_MINOR_VERSION)]
