@@ -6,6 +6,7 @@ check_env:
 	@test $${SENSITIVE_PLUGINS?Please set environment variable SENSITIVE_PLUGINS}
 
 check:
+	pyenv virtualenv 3.10 rss_tmp -f
 	pyenv local rss_tmp
 	python3 app/rss_feed_reader.py
 
@@ -19,7 +20,7 @@ dry_run:
 	pyenv local rss_tmp
 	HOW_DEEP_ITEMS_LOOK_BACK=12 \
 	LOOKING_DAYS=365 \
-	SENSITIVE_PLUGINS='kubernetes;HTMLResource' \
+	SENSITIVE_PLUGINS='HTMLResource' \
 	python3 app/rss_feed_reader.py
 
 test:
