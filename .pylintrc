@@ -10,3 +10,4 @@ disable=
     C0209, # consider-using-f-string
     W0718, # broad-exception-caught
     E0601, # used-before-assignment
+    E0401, # import-error
