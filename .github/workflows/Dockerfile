@@ -7,6 +7,11 @@ jobs:
     steps:
         - name: Checkout
           uses: actions/checkout@v3
+
+        - name: Check pwd
+          run: |
+            ls -la
+            pwd
           
         - name: Validate Dockerfile with Hadolint tools
           run: |
