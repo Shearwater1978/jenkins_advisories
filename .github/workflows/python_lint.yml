@@ -15,4 +15,4 @@ jobs:
           run: pylint app/rss_feed_reader.py
 
         - name: flake8
-          run: app/rss_feed_reader.py
+          run: flake8 app/rss_feed_reader.py
