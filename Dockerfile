@@ -1,7 +1,5 @@
 FROM python:3.11-slim
 
-MAINTAINER uglykoyote@gmail.com
-
 ENV HOW_DEEP_ITEMS_LOOK_BACK=1
 ENV LOOKING_DAYS=365
 ENV SENSITIVE_PLUGINS='kubernetes'
