@@ -2,7 +2,7 @@ name: Python unit tests
 run-name: Python testing 🚀
 on: [push]
 jobs:
-  Python unit tests:
+  PythonUnitTests:
     runs-on: ubuntu-latest
     steps:
         - name: Checkout

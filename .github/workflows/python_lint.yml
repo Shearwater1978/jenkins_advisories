@@ -2,7 +2,7 @@ name: Python code linting
 run-name: Python linting 🚀
 on: [push]
 jobs:
-  Python linting:
+  PythonLinting:
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
