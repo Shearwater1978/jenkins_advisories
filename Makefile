@@ -14,7 +14,7 @@ venv_create:
 	pyenv install 3.10 --skip-existing
 	pyenv virtualenv 3.10 rss_tmp -f
 	pyenv local rss_tmp
-	$(pip install -r app/requirements.txt | grep -v 'already satisfied')
+	pip install -r app/requirements.txt
 
 dry_run:
 	pyenv local rss_tmp
