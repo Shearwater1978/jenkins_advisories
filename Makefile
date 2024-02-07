@@ -25,11 +25,11 @@ dry_run:
 
 test:
 	pyenv local rss_tmp
-	$(pip install pytest | grep -v 'already satisfied')
+	pip install pytest
 	pytest tests/
 
 lint:
 	pyenv local rss_tmp
-	$(pip install flake8 pylint | grep -v 'already satisfied')
+	pip install flake8 pylint
 	flake8 app/rss_feed_reader.py
 	pylint app/rss_feed_reader.py
