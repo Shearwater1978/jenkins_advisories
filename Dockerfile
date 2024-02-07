@@ -13,6 +13,7 @@ USER sentinel
 WORKDIR /tmp/
 COPY --chown=sentinel:sentinel app/requirements.txt .
 RUN pip install --user -r requirements.txt
+RUN pip cache purge
 
 WORKDIR /opt/
 COPY --chown=sentinel:sentinel app/rss_feed_reader.py .
