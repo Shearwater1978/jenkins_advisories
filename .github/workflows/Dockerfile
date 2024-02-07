@@ -5,6 +5,9 @@ jobs:
   Hadolint:
     runs-on: ubuntu-latest
     steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          
         - name: Validate Dockerfile with Hadolint tools
           run: |
             export VERSION=$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
