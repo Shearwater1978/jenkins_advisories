@@ -1,0 +1,18 @@
+name: Python code linting
+run-name: Python linting 🚀
+on: [push]
+jobs:
+  Hadolint:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+
+        - name: Install tools
+          run: pip install flake8 pylint
+          
+        - name: pylint
+          run: pylint app/rss_feed_reader.py
+
+        - name: flake8
+          run: app/rss_feed_reader.py
