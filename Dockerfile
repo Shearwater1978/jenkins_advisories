@@ -7,7 +7,6 @@ ENV LOOKING_DAYS=365
 ENV SENSITIVE_PLUGINS='kubernetes'
 
 RUN pip install --upgrade pip
-
 RUN useradd -ms /bin/bash sentinel
 
 USER sentinel
