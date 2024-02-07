@@ -1,0 +1,13 @@
+name: GitHub Actions Demo
+run-name: Dockerfile linting 🚀
+on: [push]
+jobs:
+  Hadolint:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Validate Dockerfile with Hadolint tools
+          run: |
+            export VERSION=$(wget -q -O - https://api.github.com/repos/hadolint/hadolint/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+            wget https://github.com/hadolint/hadolint/releases/download/v${VERSION}/hadolint-Linux-x86_64 && chmod +x hadolint-Linux-x86_64
+            ./hadolint-Linux-x86_64 -f json --no-fail Dockerfile
+        
