@@ -133,8 +133,8 @@ def get_latest_feed(days: int):
             ).strftime(SHORT_DATE_FORMAT)
 
             if from_date <= news_udated_when <= till_date:
-                message = 'from_date < news_udated_when < till_date'
-                logger.debug(message)
+                results = 'from_date < news_udated_when < till_date'
+                logger.debug(results)
                 affected_plugins = news_feed.entries[idx].summary
                 for regexp_pattern in REGEXP_PATTERNS:
                     affected_plugins = re.sub(
@@ -145,8 +145,8 @@ def get_latest_feed(days: int):
                     if affected_plugin:
                         plugins.append(affected_plugin)
 
-        message = 'A list of all affected plugins has been collected'
-        logger.info(message)
+        results = 'A list of all affected plugins has been collected'
+        logger.info(results)
     return plugins
 
 
@@ -167,21 +167,21 @@ def main():
     affected_plugins = None
     actual_affected_plugins = get_latest_feed(days=days)
     if actual_affected_plugins:
-        message = 'Cheking whether plugins are affected'
-        logger.info(message)
+        results = 'Cheking whether plugins are affected'
+        logger.info(results)
         affected_plugins = validate_affected_plugins(
             sensitive_plugins, actual_affected_plugins
         )
 
     if affected_plugins:
-        message = (
+        results = (
             '[ALARM] One or more plugin(-s) is affeted'
             f'The list of affected plugin(-s): {affected_plugins}'
         )
-        logger.info(message)
+        logger.info(results)
     else:
-        message = f'For the {days} day(-s) no any sensitive plugin(-s) found'
-        logger.info(message)
+        results = f'For the {days} day(-s) no any sensitive plugin(-s) found'
+        logger.info(results)
 
 
 if __name__ == '__main__':
