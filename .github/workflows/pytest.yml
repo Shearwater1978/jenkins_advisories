@@ -1,6 +1,8 @@
 name: Python unit tests
 run-name: Python testing 🚀
 on: [push]
+  paths-ignore:
+    - '**/README.md'
 jobs:
   PythonUnitTests:
     runs-on: ubuntu-latest

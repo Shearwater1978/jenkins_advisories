@@ -1,6 +1,8 @@
 name: Python code linting
 run-name: Python linting 🚀
 on: [push]
+  paths-ignore:
+    - '**/README.md'
 jobs:
   PythonLinting:
     runs-on: ubuntu-latest
