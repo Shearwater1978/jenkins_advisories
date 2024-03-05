@@ -1,6 +1,9 @@
 name: Docker
 run-name: Dockerfile lint and test 🚀
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - '**/README.md'
 jobs:
   Hadolint:
     runs-on: ubuntu-latest

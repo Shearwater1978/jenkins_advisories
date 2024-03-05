@@ -22,7 +22,7 @@ SENSITIVE_PLUGINS='Git server' HOW_DEEP_ITEMS_LOOK_BACK=1 LOOKING_DAYS=31 make c
 
 ## How to run in prod mode
 * Set up all env variables
-* Execute command
+* Execute command:
 ```
 make check
 ```
