@@ -1,3 +1,4 @@
 .python-version
 .scannerwork
 __pycache__/
+.vscode
