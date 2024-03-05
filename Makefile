@@ -20,8 +20,10 @@ dry_run:
 
 test:
 	pyenv local rss_tmp
-	pip install pytest
+	pip install pytest pytest-cov
 	pytest tests/
+	coverage run -m pytest
+	coverage report -m
 
 lint:
 	pyenv local rss_tmp

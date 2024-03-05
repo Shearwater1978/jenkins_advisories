@@ -2,3 +2,4 @@
 .scannerwork
 __pycache__/
 .vscode
+.coverage
