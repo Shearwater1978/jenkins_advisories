@@ -2,8 +2,8 @@
 
 ## Prerequisites
 
-- Linux based OS
-- Python3 preinstalled
+- Linux-family OS (Tested on the MacOS Sonoma; Debian 11)
+- Python3 preinstalled (Tested on the Python3 v3.10)
 - pyenv preinstalled
 - make preinstalled
 
