@@ -1,11 +1,6 @@
 all: venv_create dry_run
 
-check_env:
-	@test $${HOW_DEEP_ITEMS_LOOK_BACK?Please set environment variable HOW_DEEP_ITEMS_LOOK_BACK}
-	@test $${LOOKING_DAYS?Please set environment variable LOOKING_DAYS}
-	@test $${SENSITIVE_PLUGINS?Please set environment variable SENSITIVE_PLUGINS}
-
-check: check_env
+check:
 	pyenv virtualenv 3.10 rss_tmp -f
 	pyenv local rss_tmp
 	python3 app/rss_feed_reader.py

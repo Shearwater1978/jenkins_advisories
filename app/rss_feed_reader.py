@@ -28,34 +28,32 @@ logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
 
 
 def read_envs():
+    missed_env_vars = []
     try:
         how_deep_items_look_back = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
-    except Exception as error:
-        results = (
-            'Env variable HOW_DEEP_ITEMS_LOOK_BACK is'
-            'not exists. Script terminated.'
-        )
-        logger.error(results)
-        raise SystemExit from error
+    except Exception:
+        missed_env_vars.append('HOW_DEEP_ITEMS_LOOK_BACK')
 
     try:
         looking_days = int(os.environ['LOOKING_DAYS'])
-    except Exception as error:
-        results = 'Env variable LOOKING_DAYS is not exists. Script terminated.'
-        logger.error(results)
-        raise SystemExit from error
+    except Exception:
+        missed_env_vars.append('LOOKING_DAYS')
 
     try:
         sensitive_plugins = os.environ['SENSITIVE_PLUGINS'].split(';')
         sensitive_plugins = [x.lstrip(' ') for x in sensitive_plugins]
         sensitive_plugins = [x.rstrip(' ') for x in sensitive_plugins]
-    except Exception as error:
+    except Exception:
+        missed_env_vars.append('SENSITIVE_PLUGINS')
+
+    if len(missed_env_vars) != 0:
         results = (
-            'Env variable SENSITIVE_PLUGINS is not '
-            'exists. Script terminated.'
+            'One or more env variable missed. '
+            'List of missed variable(-s): %s'
+            % missed_env_vars
         )
         logger.error(results)
-        raise SystemExit from error
+        sys.exit(1)
 
     return (how_deep_items_look_back, looking_days, sensitive_plugins)
 
