@@ -8,8 +8,8 @@
 - make preinstalled
 
 ## How to run in demo mode
-* Open URL: https://www.jenkins.io/security/advisories/ and pick up any random plugin from the latest report. Look an example below
-* Adjust the current number for the ```LOOKING_DAYS```. Execute command
+* Open URL: https://www.jenkins.io/security/advisories/ and pick up any random plugin from the latest report.
+* Adjust the number of days for value ```LOOKING_DAYS```. Execute command
 ```
 SENSITIVE_PLUGINS='Git server' HOW_DEEP_ITEMS_LOOK_BACK=1 LOOKING_DAYS=31 make check
 ```
