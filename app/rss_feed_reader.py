@@ -31,19 +31,19 @@ def read_envs():
     missed_env_vars = []
     try:
         how_deep_items_look_back = int(os.environ['HOW_DEEP_ITEMS_LOOK_BACK'])
-    except Exception as error:
+    except Exception:
         missed_env_vars.append('HOW_DEEP_ITEMS_LOOK_BACK')
 
     try:
         looking_days = int(os.environ['LOOKING_DAYS'])
-    except Exception as error:
+    except Exception:
         missed_env_vars.append('LOOKING_DAYS')
 
     try:
         sensitive_plugins = os.environ['SENSITIVE_PLUGINS'].split(';')
         sensitive_plugins = [x.lstrip(' ') for x in sensitive_plugins]
         sensitive_plugins = [x.rstrip(' ') for x in sensitive_plugins]
-    except Exception as error:
+    except Exception:
         missed_env_vars.append('SENSITIVE_PLUGINS')
 
     if len(missed_env_vars) != 0:
