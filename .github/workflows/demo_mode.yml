@@ -25,6 +25,6 @@ jobs:
         - name: Run in demo mode
           run: python3 app/rss_feed_reader.py
           env:
-            HOW_DEEP_ITEMSLOOK_BACK: '12'
+            HOW_DEEP_ITEMS_LOOK_BACK: '12'
             LOOKING_DAYS: '365'
             SENSITIVE_PLUGINS: 'HTMLResource;kubernetes'
