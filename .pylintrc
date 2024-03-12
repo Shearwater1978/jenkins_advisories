@@ -11,3 +11,6 @@ disable=
     W0718, # broad-exception-caught
     E0601, # used-before-assignment
     E0401, # import-error
+
+[REFACTORING]
+no-else-return=no
