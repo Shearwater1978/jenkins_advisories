@@ -9,7 +9,7 @@ import os
 import feedparser
 
 
-RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
+RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml1'
 DATE_FORMAT_STR = '%a, %d %b %Y %I:%M:%S %z'
 SHORT_DATE_FORMAT = '%Y-%m-%d'
 REGEXP_PATTERNS = [
@@ -106,6 +106,17 @@ def custom_exception():
     raise SystemError
 
 
+def get_news_feed_status(news_feed):
+    try:
+        if news_feed.status != 200:
+            return False
+        else:
+            return True
+    except Exception as error:
+        logger.error(error)
+        custom_exception()
+
+
 def get_latest_feed(days: int):
     till_date, from_date = calculate_boundaries_of_interest(days_delta=days)
 
@@ -113,13 +124,14 @@ def get_latest_feed(days: int):
     news_feed_counter = len(news_feed)
     affected_plugin = []
 
-    try:
-        news_feed.status
-    except Exception as error:
-        logger.error(error)
-        custom_exception()
+    is_news_feed_status_ok = get_news_feed_status(news_feed)
+    # try:
+    #     is_news_feed_status_ok = get_news_feed_status(news_feed)
+    # except Exception as error:
+    #     logger.error(error)
+    #     custom_exception()
 
-    if news_feed.status != 200:
+    if not is_news_feed_status_ok:
         custom_exception()
 
     plugins = []

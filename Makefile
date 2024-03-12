@@ -11,7 +11,7 @@ venv_create:
 	pyenv local rss_tmp
 	pip install -r app/requirements.txt
 
-dry_run:
+dry_run: venv_create
 	pyenv local rss_tmp
 	HOW_DEEP_ITEMS_LOOK_BACK=12 \
 	LOOKING_DAYS=365 \
