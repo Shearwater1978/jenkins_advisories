@@ -125,12 +125,6 @@ def get_latest_feed(days: int):
     affected_plugin = []
 
     is_news_feed_status_ok = get_news_feed_status(news_feed)
-    # try:
-    #     is_news_feed_status_ok = get_news_feed_status(news_feed)
-    # except Exception as error:
-    #     logger.error(error)
-    #     custom_exception()
-
     if not is_news_feed_status_ok:
         custom_exception()
 
