@@ -9,7 +9,7 @@ import os
 import feedparser
 
 
-RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml1'
+RSS_FEED_URL = 'https://www.jenkins.io/security/advisories/rss.xml'
 DATE_FORMAT_STR = '%a, %d %b %Y %I:%M:%S %z'
 SHORT_DATE_FORMAT = '%Y-%m-%d'
 REGEXP_PATTERNS = [
