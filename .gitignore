@@ -3,3 +3,8 @@
 __pycache__/
 .vscode
 .coverage
+**/.terraform/**
+*/**/.tfvars
+*.tfstate
+**/terraform.tfvars
+**/.terraform.lock.hcl
