@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '**/app/'
+      - '**/tests/'
 jobs:
   PythonLinting:
     runs-on: ubuntu-latest
