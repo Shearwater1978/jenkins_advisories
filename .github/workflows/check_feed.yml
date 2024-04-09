@@ -3,11 +3,6 @@ run-name: Check Jenkins reports 🚀
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - '**/README.md'
-      - '**/Jenkinsfile'
-      - '**/Makefile'
-      - '**/Dockerfile'
   schedule:
     - cron: "59 23 * * *"
 jobs:
