@@ -2,11 +2,13 @@ name: Docker
 run-name: Dockerfile lint and test 🚀
 on:
   push:
-    paths-ignore:
-      - '**/README.md'
+    paths:
+      - '**/Dockerfile'
+      - '**/app/'
 jobs:
   Hadolint:
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
     steps:
         - name: Checkout
           uses: actions/checkout@v3
