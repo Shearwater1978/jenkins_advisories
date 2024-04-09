@@ -2,11 +2,10 @@ name: Check Jenkins advisories reports
 run-name: Check Jenkins reports 🚀
 on:
   workflow_dispatch:
-  push:
   schedule:
     - cron: "59 23 * * *"
 jobs:
-  PythonUnitTests:
+  JenkinsCheckReports:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
