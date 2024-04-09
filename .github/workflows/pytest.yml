@@ -4,9 +4,13 @@ on:
   push:
     paths-ignore:
       - '**/README.md'
+      - '**/Jenkinsfile'
+      - '**/Makefile'
+      - '**/Dockerfile'
 jobs:
   PythonUnitTests:
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
     steps:
         - name: Checkout
           uses: actions/checkout@v4
