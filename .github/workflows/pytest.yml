@@ -7,6 +7,9 @@ on:
       - '**/Jenkinsfile'
       - '**/Makefile'
       - '**/Dockerfile'
+    paths:
+      - '**/app/'
+      - '**/tests/'
 jobs:
   PythonUnitTests:
     runs-on: ubuntu-latest
