@@ -2,11 +2,6 @@ name: Python unit tests
 run-name: Python testing 🚀
 on:
   push:
-    paths-ignore:
-      - '**/README.md'
-      - '**/Jenkinsfile'
-      - '**/Makefile'
-      - '**/Dockerfile'
     paths:
       - '**/app/'
       - '**/tests/'
