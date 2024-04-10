@@ -179,7 +179,7 @@ def main():
 
     if affected_plugins:
         results = (
-            '[ALARM] One or more plugin(-s) is affected'
+            '[ALARM] One or more plugin(-s) is affected. '
             f'The list of affected plugin(-s): {affected_plugins}'
         )
         logger.info(results)
