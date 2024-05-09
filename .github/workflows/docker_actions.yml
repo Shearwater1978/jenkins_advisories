@@ -3,14 +3,14 @@ run-name: Check some Docker actions 🚀
 on:
   workflow_dispatch:
 jobs:
-  JenkinsDemoCheck:
+  docker-actions:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Login to Docker 
         uses: docker/login-action@v3
         with:
-          registry: ${{ vars.REGISTRY_URL }}
+          # registry: ${{ vars.REGISTRY_URL }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
