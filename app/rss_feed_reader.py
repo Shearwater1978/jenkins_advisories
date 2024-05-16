@@ -41,8 +41,7 @@ def read_envs():
 
     try:
         sensitive_plugins = os.environ['SENSITIVE_PLUGINS'].split(';')
-        sensitive_plugins = [x.lstrip(' ') for x in sensitive_plugins]
-        sensitive_plugins = [x.rstrip(' ') for x in sensitive_plugins]
+        sensitive_plugins = [x.lstrip(' ').rstrip(' ') for x in sensitive_plugins]
     except Exception:
         missed_env_vars.append('SENSITIVE_PLUGINS')
 
