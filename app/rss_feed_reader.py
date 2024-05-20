@@ -56,32 +56,6 @@ def read_envs():
 
     return (how_deep_items_look_back, looking_days, sensitive_plugins)
 
-
-def check_python_release():
-    python_major_version = 3
-    python_minor_version = 10
-    stable_runtime_verions = '.'.join(
-        [str(python_major_version), str(python_minor_version)]
-    )
-
-    if (sys.version_info[0] == python_major_version) and (
-        sys.version_info[1] >= python_minor_version
-    ):
-        is_runtime_ok = True
-    else:
-        is_runtime_ok = False
-    if not is_runtime_ok:
-        logger.warning('Mismatch runtime versions')
-        logger.warning(
-            'The stable runtime verision is: %s'
-            % stable_runtime_verions
-        )
-        logger.warning(
-            'The Python3 runtime is %s.%s'
-            % (sys.version_info[0], sys.version_info[1])
-        )
-
-
 def calculate_boundaries_of_interest(days_delta=7):
     now = datetime.datetime.today()
     till_date = now.strftime(SHORT_DATE_FORMAT)
@@ -164,7 +138,6 @@ def validate_affected_plugins(sensitive_plugins, affected_plugins) -> list:
 
 
 def main():
-    check_python_release()
 
     days = looking_days
     affected_plugins = None

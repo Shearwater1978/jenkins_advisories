@@ -3,3 +3,6 @@
 __pycache__/
 .vscode
 .coverage
+coverage/**
+**/*/.terraform.lock.hcl
+cloud/gcp/.terraform/**
