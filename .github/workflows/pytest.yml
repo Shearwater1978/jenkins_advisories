@@ -22,8 +22,10 @@ jobs:
 
         - name: coverage
           run: |
+            mkdir coverage/
             coverage run -m pytest tests/
             coverage report -m
+            coverage json -o coverage/coverage-summary.json
 
         - name: 'Report Coverage'
           if: always() 
