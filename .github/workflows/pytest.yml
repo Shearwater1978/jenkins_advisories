@@ -25,11 +25,3 @@ jobs:
             mkdir coverage/
             coverage run -m pytest tests/
             coverage report -m
-            coverage json -o coverage/coverage-summary.json
-
-        - name: 'Report Coverage'
-          if: always() 
-          uses:  davelosert/vitest-coverage-report-action@v2
-          with:
-            name: 'Backend'
-            json-final-path: './coverage/coverage-summary.json'
