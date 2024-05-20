@@ -1,6 +1,7 @@
 name: Python unit tests
 run-name: Python testing 🚀
 on:
+  workflow_dispatch:
   push:
     paths:
       - '**/app/'
