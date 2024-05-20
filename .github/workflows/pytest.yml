@@ -9,7 +9,7 @@ on:
 jobs:
   PythonUnitTests:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
     steps:
         - name: Checkout
           uses: actions/checkout@v4
