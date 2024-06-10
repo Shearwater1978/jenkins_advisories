@@ -1,0 +1,16 @@
+name: Main GHA
+run-name: Main gha 🚀
+on:
+  workflow_dispatch:
+
+jobs:
+  GHAworkflow:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Install Python v.xx
+          uses: actions/setup-pythov@v5
+          with:
+            python-version: '3.12'
