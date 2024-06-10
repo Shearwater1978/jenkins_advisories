@@ -11,6 +11,6 @@ jobs:
           uses: actions/checkout@v4
 
         - name: Install Python v.xx
-          uses: actions/setup-pythov@v5
+          uses: actions/setup-python@v5
           with:
             python-version: '3.12'
