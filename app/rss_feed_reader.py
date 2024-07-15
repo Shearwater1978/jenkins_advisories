@@ -22,6 +22,7 @@ REGEXP_PATTERNS = [
     r'<a.*>',
 ]
 
+
 logger = logging.getLogger(__name__)
 FORMAT_INFO = '%(asctime)s - %(levelname)s - %(message)s'
 logging.basicConfig(format=FORMAT_INFO, level=logging.INFO)
@@ -45,6 +46,12 @@ def read_envs():
     except Exception:
         missed_env_vars.append('SENSITIVE_PLUGINS')
 
+    try:
+        if_gha_execute = os.environ['GITHUB_ACTIONS']
+        logger.disabled - True
+    except:
+        if_gha_execute = False
+    
     if len(missed_env_vars) != 0:
         results = (
             'One or more env variable missed. '
@@ -54,7 +61,8 @@ def read_envs():
         logger.error(results)
         sys.exit(1)
 
-    return (how_deep_items_look_back, looking_days, sensitive_plugins)
+    return (how_deep_items_look_back, looking_days, sensitive_plugins, if_gha_execute)
+
 
 def calculate_boundaries_of_interest(days_delta=7):
     now = datetime.datetime.today()
@@ -79,26 +87,31 @@ def custom_exception():
     raise SystemError
 
 
-def get_news_feed_status(news_feed):
-    try:
-        if news_feed.status != 200:
-            return False
-        else:
-            return True
-    except Exception as error:
-        logger.error(error)
-        custom_exception()
+# def get_news_feed_status(news_feed):
+#     try:
+#         if news_feed.status != 200:
+#             return False
+#         else:
+#             return True
+#     except Exception as error:
+#         logger.error(error)
+#         custom_exception()
 
 
-def get_latest_feed(days: int):
+def get_latest_feed(days: int, how_deep_items_look_back: int):
     till_date, from_date = calculate_boundaries_of_interest(days_delta=days)
 
     news_feed = feedparser.parse(RSS_FEED_URL)
     news_feed_counter = len(news_feed)
     affected_plugin = []
 
-    is_news_feed_status_ok = get_news_feed_status(news_feed)
-    if not is_news_feed_status_ok:
+    try:
+        news_feed.status
+    except Exception as error:
+        logger.error(error)
+        custom_exception()
+    
+    if news_feed.status != 200:
         custom_exception()
 
     plugins = []
@@ -138,30 +151,41 @@ def validate_affected_plugins(sensitive_plugins, affected_plugins) -> list:
 
 
 def main():
+    (how_deep_items_look_back,
+     looking_days,
+     sensitive_plugins,
+     is_gha_execute) = read_envs()
+    
+    logger.info('Script started')
 
     days = looking_days
-    affected_plugins = None
-    actual_affected_plugins = get_latest_feed(days=days)
-    if actual_affected_plugins:
-        results = 'Checking whether plugins are affected'
-        logger.info(results)
-        affected_plugins = validate_affected_plugins(
-            sensitive_plugins, actual_affected_plugins
+    actual_affected_plugins = None
+    
+    actual_affected_plugins = get_latest_feed(
+        days=days,
+        how_deep_items_look_back=how_deep_items_look_back
         )
 
+    if actual_affected_plugins:
+        results = 'Checking whether plugins are affected'
+        if is_gha_execute:
+            print(results)
+        else:
+            logger.info(results)
+    else:
+        results = f'For the {days} day(-s) no any sensitive plugin(-s) found'
+        logger.info('Script completed')
+
     if affected_plugins:
-        results = (
-            '[ALARM] One or more plugin(-s) is affected. '
-            f'The list of affected plugin(-s): {affected_plugins}'
-        )
-        logger.info(results)
+        results = f'The list of affected plugin(-s): {affected_plugins}.'
+        if is_gha_execute:
+            print(results)
+        else:
+            logger.info(results)
     else:
         results = f'For the {days} day(-s) no any sensitive plugin(-s) found'
         logger.info(results)
-
+        
 
 if __name__ == '__main__':
-    how_deep_items_look_back, looking_days, sensitive_plugins = read_envs()
-    logger.info('Script started')
     main()
-    logger.info('Script completed')
