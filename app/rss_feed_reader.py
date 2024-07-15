@@ -93,17 +93,6 @@ def custom_exception():
     raise SystemError
 
 
-# def get_news_feed_status(news_feed):
-#     try:
-#         if news_feed.status != 200:
-#             return False
-#         else:
-#             return True
-#     except Exception as error:
-#         logger.error(error)
-#         custom_exception()
-
-
 def get_latest_feed(days: int, how_deep_items_look_back: int):
     till_date, from_date = calculate_boundaries_of_interest(days_delta=days)
 

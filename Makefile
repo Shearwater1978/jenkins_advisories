@@ -11,7 +11,7 @@ help: ## Display this help screen
 .PHONY: check
 check: venv_create ## Run script in the prod mode
 	pyenv local rss_tmp
-	pip install -r app/requirements.txt
+	pip install -r app/requirements.txt | grep -v 'already satisfied'; echo ${PIPESTATUS[@]}
 	python3 app/rss_feed_reader.py
 
 .PHONY: venv_create
@@ -19,7 +19,7 @@ venv_create: ## Create and prepare env, if it nor exists
 	pyenv install 3.10 --skip-existing
 	pyenv virtualenv 3.10 rss_tmp -f
 	pyenv local rss_tmp
-	pip install -r app/requirements.txt
+	pip install -r app/requirements.txt | grep -v 'already satisfied'; echo ${PIPESTATUS[@]}
 
 .PHONY: dry_run
 dry_run: venv_create ## Dry run script
@@ -32,7 +32,7 @@ dry_run: venv_create ## Dry run script
 .PHONY: test
 test: venv_create ## Executing pytest
 	pyenv local rss_tmp
-	pip install pytest pytest-cov
+	pip install pytest pytest-cov | grep -v 'already satisfied'; echo ${PIPESTATUS[@]}
 	pytest tests/
 	coverage run -m pytest
 	coverage report -m
@@ -41,6 +41,6 @@ test: venv_create ## Executing pytest
 .PHONY: lint
 lint: venv_create ## Executing linters
 	pyenv local rss_tmp
-	pip install flake8 pylint
+	pip install flake8 pylint | grep -v 'already satisfied'; echo ${PIPESTATUS[@]}
 	flake8 app/rss_feed_reader.py
 	pylint app/rss_feed_reader.py
