@@ -76,7 +76,7 @@ def calculate_boundaries_of_interest(days_delta=7):
     from_date = (now - datetime.timedelta(days=days_delta))
     from_date = from_date.strftime(SHORT_DATE_FORMAT)
     logger.info(
-        'Specific date range calculated. From date:'
+        'Specific date ranges calculated. From date:'
         '%s, till date: %s' % (from_date, till_date)
     )
 
