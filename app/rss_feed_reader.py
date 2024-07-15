@@ -161,6 +161,7 @@ def main():
         how_deep_items_look_back=how_deep_items_look_back
         )
 
+    affected_plugins = []
     if actual_affected_plugins:
         results = 'Checking whether plugins are affected'
         logger.info(results)
