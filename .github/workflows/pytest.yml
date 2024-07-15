@@ -2,14 +2,14 @@ name: Python unit tests
 run-name: Python testing 🚀
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '**/app/'
-      - '**/tests/'
+  pull_request:
+    types: [opend, synchronize, edited, ready_for_review]
+    branches:
+      - main
+
 jobs:
-  PythonUnitTests:
+  python-unit-tests:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
     steps:
         - name: Checkout
           uses: actions/checkout@v4

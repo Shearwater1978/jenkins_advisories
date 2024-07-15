@@ -1,14 +1,22 @@
 name: Python code linting
 run-name: Python linting 🚀
 on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - edited
+      - ready_for_review
+    branches:
+      - main
   push:
     paths:
       - '**/app/'
       - '**/tests/'
 jobs:
-  PythonLinting:
+  python-lint:
     runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
     steps:
         - name: Checkout
           uses: actions/checkout@v4
