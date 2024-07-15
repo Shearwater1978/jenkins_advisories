@@ -1,31 +1,45 @@
-all: venv_create dry_run
+SENSITIVE_PLUGINS ?= 'HTMLResource'
+HOW_DEEP_ITEMS_LOOK_BACK ?= 12
+LOOKING_DAYS ?= 365
 
-check:
-	pyenv virtualenv 3.10 rss_tmp -f
+all: help
+
+.PHONY: help
+help: ## Display this help screen
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m\033[0m\n"} /^[$$()% a-zA-Z_-]+:.*?##/ { printf "\033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+.PHONY: check
+check: venv_create ## Run script in the prod mode
 	pyenv local rss_tmp
+	pip install -r app/requirements.txt
 	python3 app/rss_feed_reader.py
 
-venv_create:
+.PHONY: venv_create
+venv_create: ## Create and prepare env, if it nor exists
 	pyenv install 3.10 --skip-existing
 	pyenv virtualenv 3.10 rss_tmp -f
 	pyenv local rss_tmp
 	pip install -r app/requirements.txt
 
-dry_run: venv_create
+.PHONY: dry_run
+dry_run: venv_create ## Dry run script
 	pyenv local rss_tmp
-	HOW_DEEP_ITEMS_LOOK_BACK=12 \
-	LOOKING_DAYS=365 \
-	SENSITIVE_PLUGINS='HTMLResource' \
+	HOW_DEEP_ITEMS_LOOK_BACK=$(HOW_DEEP_ITEMS_LOOK_BACK) \
+	LOOKING_DAYS=$(LOOKING_DAYS) \
+	SENSITIVE_PLUGINS=$(SENSITIVE_PLUGINS) \
 	python3 app/rss_feed_reader.py
 
-test:
+.PHONY: test
+test: venv_create ## Executing pytest
 	pyenv local rss_tmp
 	pip install pytest pytest-cov
 	pytest tests/
 	coverage run -m pytest
 	coverage report -m
+	pytest --cov --cov-report=html
 
-lint:
+.PHONY: lint
+lint: venv_create ## Executing linters
 	pyenv local rss_tmp
 	pip install flake8 pylint
 	flake8 app/rss_feed_reader.py
