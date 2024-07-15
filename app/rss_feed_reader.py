@@ -168,13 +168,10 @@ def main():
 
     if actual_affected_plugins:
         results = 'Checking whether plugins are affected'
-        if is_gha_execute:
-            print(results)
-        else:
-            logger.info(results)
-    else:
-        results = f'For the {days} day(-s) no any sensitive plugin(-s) found'
-        logger.info('Script completed')
+        logger.info(results)
+        affected_plugins = validate_affected_plugins(
+            sensitive_plugins, actual_affected_plugins
+        )
 
     if affected_plugins:
         results = f'The list of affected plugin(-s): {affected_plugins}.'
