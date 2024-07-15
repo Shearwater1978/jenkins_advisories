@@ -16,6 +16,20 @@ class TestReadEnvVariables(unittest.TestCase):
             read_envs()
 
         self.assertEqual(cm.exception.code, 1)
+    
+    @patch.dict('os.environ', {'HOW_DEEP_ITEMS_LOOK_BACK': '1', 'SENSITIVE_PLUGINS': 'git'})
+    def test_read_missed_envs(self):
+        with self.assertRaises(SystemExit) as cm:
+            read_envs()
+
+        self.assertEqual(cm.exception.code, 1)
+
+    @patch.dict('os.environ', {'HOW_DEEP_ITEMS_LOOK_BACK': '1', 'LOOKING_DAYS': '91'})
+    def test_read_missed_envs(self):
+        with self.assertRaises(SystemExit) as cm:
+            read_envs()
+
+        self.assertEqual(cm.exception.code, 1)
 
 if __name__ == '__main__':
     unittest.main()
