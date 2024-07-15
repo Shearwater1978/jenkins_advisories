@@ -42,16 +42,17 @@ def read_envs():
 
     try:
         sensitive_plugins = os.environ['SENSITIVE_PLUGINS'].split(';')
-        sensitive_plugins = [x.lstrip(' ').rstrip(' ') for x in sensitive_plugins]
+        sensitive_plugins = [x.lstrip(' ').rstrip(' ')
+                             for x in sensitive_plugins]
     except Exception:
         missed_env_vars.append('SENSITIVE_PLUGINS')
 
     try:
         if_gha_execute = os.environ['GITHUB_ACTIONS']
-        logger.disabled - True
-    except:
+        logger.disabled = True
+    except Exception:
         if_gha_execute = False
-    
+
     if len(missed_env_vars) != 0:
         results = (
             'One or more env variable missed. '
@@ -61,7 +62,12 @@ def read_envs():
         logger.error(results)
         sys.exit(1)
 
-    return (how_deep_items_look_back, looking_days, sensitive_plugins, if_gha_execute)
+    return (
+        how_deep_items_look_back,
+        looking_days,
+        sensitive_plugins,
+        if_gha_execute
+    )
 
 
 def calculate_boundaries_of_interest(days_delta=7):
@@ -110,7 +116,7 @@ def get_latest_feed(days: int, how_deep_items_look_back: int):
     except Exception as error:
         logger.error(error)
         custom_exception()
-    
+
     if news_feed.status != 200:
         custom_exception()
 
@@ -155,12 +161,12 @@ def main():
      looking_days,
      sensitive_plugins,
      is_gha_execute) = read_envs()
-    
+
     logger.info('Script started')
 
     days = looking_days
     actual_affected_plugins = None
-    
+
     actual_affected_plugins = get_latest_feed(
         days=days,
         how_deep_items_look_back=how_deep_items_look_back
@@ -182,7 +188,7 @@ def main():
     else:
         results = f'For the {days} day(-s) no any sensitive plugin(-s) found'
         logger.info(results)
-        
+
 
 if __name__ == '__main__':
     main()
